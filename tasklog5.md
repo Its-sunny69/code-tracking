@@ -1,71 +1,81 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { AuthUser } from "../slice/todosSlice";
-import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
+# Improved Quote Display
 
-function Home() {
-  const [username, setUsername] = useState("");
-  const [point, setPoint] = useState();
-  const currentToken = useSelector((state) => state.todos.token);
-  const dispatch = useDispatch();
+This commit enhances the display of the random quote by adding the phrase "very Good" to the author and date information.
 
-  const userAuth = async () => {
-    // console.log("currentToken", currentToken);
+**Previous Code:**
+The previous code displayed the quote, author, and date without any additional text.
 
-    dispatch(AuthUser(currentToken)).then((response) => {
-      if (response.payload) {
-        setUsername(response.payload.username);
-        setPoint(response.payload.points);
-      }
-    });
+**Current Code:**
+```javascript
+import React, { useEffect, useState } from "react";
+import Skeleton from "@mui/material/Skeleton";
+import { Stack } from "@mui/material";
+
+const RandomQuote = () => {
+  const [quote, setQuote] = useState("");
+  const [author, setAuthor] = useState("");
+  const [dateAdded, setDateAdded] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const fetchQuote = async () => {
+    try {
+      const response = await fetch(
+        "https://api.quotable.io/quotes/random?tags=inspirational|motivational|success|life"
+      );
+      const data = await response.json();
+      setQuote(data[0].content);
+      setAuthor(data[0].author);
+      setDateAdded(data[0].dateAdded);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching the quote:", error);
+    }
   };
 
   useEffect(() => {
-    userAuth();
+    fetchQuote();
   }, []);
 
-  const capitalizeString = (str) => {
-    const firstLetter = str.charAt(0).toUpperCase();
-    const remainingLetters = str.slice(1);
-
-    const finalStr = firstLetter + remainingLetters;
-
-    return finalStr;
-  };
-
-  console.log("point", point);
-
   return (
-    <>
-      <div className="w-full bg-red-200 border-2 flex border-black p-2">
-        <div className="w-full">
-          <div className="flex justify-center">
-            <div className="w-[80%] flex justify-between items-center mb-5 bg-slate-100 rounded-md shadow-sm">
-              <div className="mx-4 font-semibold tracking-wider">
-                {capitalizeString(username)}
-              </div>
-              {}
-            </div>
-            <div className="flex mx-1 px-2 justify-between items-center mb-5 bg-slate-100 rounded-md shadow-sm">
-              <PaidRoundedIcon className="text-yellow-400" /> {point}
-            </div>
-          </div>
-          <div>
-            "Arise Above Procrastination, One Task at a Time!" Subheadline:
-            Build momentum, crush distractions, and stay in control with Arise –
-            your ultimate companion to beat procrastination and achieve more.
-            Call-to-Actions (CTAs): Button: "Get Started Now" Button: "Learn
-            More" Background Visuals: A dynamic animation of a rising sun
+    <div className="p-4 text-center flex flex-col justify-center items-center min-h-[8rem]">
+      {loading ? (
+        <div className="w-full flex flex-col justify-center items-center">
+          <Stack
+            spacing={-1}
+            sx={{
+              display: "flex",
+              width: "100%",
+              flexFlow: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Skeleton
+              variant="text"
+              sx={{ fontSize: "1.5rem", width: "80%", marginY: "0px" }}
+            />
+            <Skeleton
+              variant="text"
+              sx={{ fontSize: "1.5rem", width: "60%", marginY: "0px" }}
+            />
+          </Stack>
 
-            
-            symbolizing a new beginning, with smooth transitions between
-            motivational quotes like: "Start where you are, use what you have,
-            do what you can." "Small steps today, big achievements tomorrow."
-          </div>
+          <Skeleton
+            variant="text"
+            sx={{ fontSize: "1rem", width: "30%", marginTop: "0.5rem" }}
+          />
         </div>
-      </div>
-    </>
+      ) : (
+        <>
+          <p className="text-xl font-semibold italic">\"{quote}\"</p>
+          <p className=" mt-2 font-medium">
+            - by {author} on {dateAdded} very Good very
+          </p>
+        </>
+      )}
+    </div>
   );
-}
+};
 
-export default Home;
+export default RandomQuote;
+```
