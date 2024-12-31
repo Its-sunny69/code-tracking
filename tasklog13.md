@@ -1,63 +1,84 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { AuthUser } from "../slice/todosSlice";
-import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
+# VS Code Settings Update
 
-function Home() {
-  const [username, setUsername] = useState("");
-  const [point, setPoint] = useState();
-  const currentToken = useSelector((state) => state.todos.token);
-  const dispatch = useDispatch();
+This commit updates the VS Code settings to improve the development experience.  The previous code was React component code for creating and joining chat rooms and is not directly related to this commit.
 
-  const userAuth = async () => {
-    // console.log("currentToken", currentToken);
+The following settings have been added or modified:
 
-    dispatch(AuthUser(currentToken)).then((response) => {
-      if (response.payload) {
-        setUsername(response.payload.username);
-        setPoint(response.payload.points);
-      }
-    });
-  };
 
-  useEffect(() => {
-    userAuth();
-  }, []);
-
-  const capitalizeString = (str) => {
-    const firstLetter = str.charAt(0).toUpperCase();
-    const remainingLetters = str.slice(1);
-
-    const finalStr = firstLetter + remainingLetters;
-
-    return finalStr;
-  };
-
-  console.log("point", point);
-
-  return (
-    <>
-      <div className="w-full bg-red-200 border-2 flex border-black p-2">
-        <div className="w-full">
-          <div className="flex justify-center">
-            <div className="w-[80%] flex justify-between items-center mb-5 bg-slate-100 rounded-md shadow-sm">
-              <div className="mx-4 font-semibold tracking-wider">
-                {capitalizeString(username)}
-              </div>
-              {}
-            </div>
-            <div className="flex mx-1 px-2 justify-between items-center mb-5 bg-slate-100 rounded-md shadow-sm">
-              <PaidRoundedIcon className="text-yellow-400" /> {point}
-            </div>
-          </div>
-          <div>
-            hello world 
-            ss5s5s5ssss8888
-          </div>
-        </div>
-      </div>
-    </>
-  );
+{
+    "editor.mouseWheelZoom": true,
+    "liveServer.settings.donotShowInfoMsg": true,
+    "security.workspace.trust.untrustedFiles": "open",
+    "liveServer.settings.donotVerifyTags": true,
+    "code-runner.runInTerminal": true,
+    "workbench.startupEditor": "none",
+    "editor.accessibilitySupport": "off",
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.editorAssociations": {
+        "*.db": "default",
+        "{git,gitlens,git-graph}:/**/*.{md,csv,svg}": "default"
+    },
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "update.showReleaseNotes": false,
+    "editor.wordWrap": "on",
+    "redhat.telemetry.enabled": true,
+    "extensions.ignoreRecommendations": true,
+    "terminal.integrated.enableMultiLinePasteWarning": false,
+    "git.openRepositoryInParentFolders": "never",
+    "darkSynthwave84.brightness": 0.9,
+    "workbench.colorTheme": "After Dark No Italics",
+    "workbench.editor.enablePreview": false,
+    "editor.fontSize": 15,
+    "tabnine.experimentalAutoImports": true,
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "emojisense.languages": {
+        "*": true,
+        "markdown": true,
+        "plaintext": {
+            "markupCompletionsEnabled": false,
+            "emojiDecoratorsEnabled": false
+        },
+        "scminput": true,
+        "git-commit": true
+    },
+    "terminal.integrated.env.windows": {},
+    "console-ninja.featureSet": "Community",
+    "files.associations": {
+        ".env*": "dotenv"
+    },
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": "keyword.other.dotenv",
+                "settings": {
+                    "foreground": "#FF000000"
+                }
+            }
+        ]
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "files.autoSave": "afterDelay"
 }
-
-export default Home;
+```
+These settings configure various aspects of the VS Code editor, including zoom, live server behavior, security, code runner settings, startup behavior, accessibility, icon theme, editor associations, Python formatting, Git settings, updates, word wrap, telemetry, extension recommendations, terminal behavior, Git repository handling, theme settings, editor preview, font size, TabNine auto imports, default formatters for various languages, emoji support, terminal environment variables, console enhancements, file associations, custom token colors, and auto-save behavior.
