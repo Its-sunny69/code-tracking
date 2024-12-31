@@ -1,64 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { AuthUser } from "../slice/todosSlice";
-import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
+# Random Quote Component Update
 
-function Home() {
-  const [username, setUsername] = useState("");
-  const [point, setPoint] = useState();
-  const currentToken = useSelector((state) => state.todos.token);
-  const dispatch = useDispatch();
+This commit updates the `RandomQuote` component to include the word "very" after the date in the quote display.  The previous version only displayed the author and date.
 
-  const userAuth = async () => {
-    // console.log("currentToken", currentToken);
+**Previous Code (Relevant Snippet):**
+```javascript
+<p className=" mt-2 font-medium">
+  - by {author} on {dateAdded}
+</p>
+```
 
-    dispatch(AuthUser(currentToken)).then((response) => {
-      if (response.payload) {
-        setUsername(response.payload.username);
-        setPoint(response.payload.points);
-      }
-    });
-  };
+**Current Code (Relevant Snippet):**
+```javascript
+<p className=" mt-2 font-medium">
+  - by {author} on {dateAdded} very
+</p>
+```
 
-  useEffect(() => {
-    userAuth();
-  }, []);
-
-  const capitalizeString = (str) => {
-    const firstLetter = str.charAt(0).toUpperCase();
-    const remainingLetters = str.slice(1);
-
-    const finalStr = firstLetter + remainingLetters;
-
-    return finalStr;
-  };
-
-  console.log("point", point);
-
-  return (
-    <>
-      <div className="w-full bg-red-200 border-2 flex border-black p-2">
-        <div className="w-full">
-          <div className="flex justify-center">
-            <div className="w-[80%] flex justify-between items-center mb-5 bg-slate-100 rounded-md shadow-sm">
-              <div className="mx-4 font-semibold tracking-wider">
-                {capitalizeString(username)}
-              </div>
-              {}
-            </div>
-            <div className="flex mx-1 px-2 justify-between items-center mb-5 bg-slate-100 rounded-md shadow-sm">
-              <PaidRoundedIcon className="text-yellow-400" /> {point}
-            </div>
-          </div>
-          <div>
-            hello world 
-            after 5s
-            after 5s
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
-
-export default Home;
+This seemingly small change adds a bit of stylistic flair to the quote presentation. The rest of the component's functionality (fetching quotes, handling loading states, skeleton loading) remains unchanged.
