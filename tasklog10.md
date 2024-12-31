@@ -1,63 +1,84 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { AuthUser } from "../slice/todosSlice";
-import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
+# Random Quote Component Styling Improvements
 
-function Home() {
-  const [username, setUsername] = useState("");
-  const [point, setPoint] = useState();
-  const currentToken = useSelector((state) => state.todos.token);
-  const dispatch = useDispatch();
+This commit enhances the styling of the `RandomQuote` component by utilizing Tailwind CSS for improved responsiveness and visual appeal.
 
-  const userAuth = async () => {
-    // console.log("currentToken", currentToken);
+**Previous Code:**
+The previous code lacked explicit styling, relying on default styles.
 
-    dispatch(AuthUser(currentToken)).then((response) => {
-      if (response.payload) {
-        setUsername(response.payload.username);
-        setPoint(response.payload.points);
-      }
-    });
+**Current Code:**
+
+```jsx
+import React, { useEffect, useState } from "react";
+import Skeleton from "@mui/material/Skeleton";
+import { Stack } from "@mui/material";
+
+const RandomQuote = () => {
+  const [quote, setQuote] = useState("");
+  const [author, setAuthor] = useState("");
+  const [dateAdded, setDateAdded] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const fetchQuote = async () => {
+    try {
+      const response = await fetch(
+        "https://api.quotable.io/quotes/random?tags=inspirational|motivational|success|life"
+      );
+      const data = await response.json();
+      setQuote(data[0].content);
+      setAuthor(data[0].author);
+      setDateAdded(data[0].dateAdded);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching the quote:", error);
+    }
   };
 
   useEffect(() => {
-    userAuth();
+    fetchQuote();
   }, []);
 
-  const capitalizeString = (str) => {
-    const firstLetter = str.charAt(0).toUpperCase();
-    const remainingLetters = str.slice(1);
-
-    const finalStr = firstLetter + remainingLetters;
-
-    return finalStr;
-  };
-
-  console.log("point", point);
-
   return (
-    <>
-      <div className="w-full bg-red-200 border-2 flex border-black p-2">
-        <div className="w-full">
-          <div className="flex justify-center">
-            <div className="w-[80%] flex justify-between items-center mb-5 bg-slate-100 rounded-md shadow-sm">
-              <div className="mx-4 font-semibold tracking-wider">
-                {capitalizeString(username)}
-              </div>
-              {}
-            </div>
-            <div className="flex mx-1 px-2 justify-between items-center mb-5 bg-slate-100 rounded-md shadow-sm">
-              <PaidRoundedIcon className="text-yellow-400" /> {point}
-            </div>
-          </div>
-          <div>
-            hello world 
-           5sssssssss
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
+    <div className="p-4 text-center flex flex-col justify-center items-center min-h-[8rem]">
+      {loading ? (
+        <div className="w-full flex flex-col justify-center items-center">
+          <Stack
+            spacing={-1}
+            sx={{
+              display: "flex",
+              width: "100%",
+              flexFlow: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Skeleton
+              variant="text"
+              sx={{ fontSize: "1.5rem", width: "80%", marginY: "0px" }}
+            />
+            <Skeleton
+              variant="text"
+              sx={{ fontSize: "1.5rem", width: "60%", marginY: "0px" }}
+            />
+          </Stack>
 
-export default Home;
+          <Skeleton
+            variant="text"
+            sx={{ fontSize: "1rem", width: "30%", marginTop: "0.5rem" }}
+          />
+        </div>
+      ) : (
+        <>
+          <p className="text-xl font-semibold italic">\"{quote}\"</p>
+          <p className=" mt-2 font-medium">
+            - by {author} on {dateAdded}
+          </p>
+        </>
+      )}
+    </div>
+  );
+};
+
+export default RandomQuote;
+```
+
+The updated code uses Tailwind CSS classes for styling, resulting in a more consistent and visually appealing display.  The changes are primarily within the className attributes applied to various elements.
